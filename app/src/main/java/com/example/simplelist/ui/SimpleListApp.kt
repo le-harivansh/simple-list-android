@@ -32,7 +32,10 @@ fun SimpleListApp() {
             .padding(it)) {
             val viewModel: HomeScreenViewModel = viewModel(factory = HomeScreenViewModel.Factory)
 
-            HomeScreen(uiState = viewModel.uiState)
+            HomeScreen(
+                uiState = viewModel.uiState,
+                deleteItem = { itemId -> viewModel.deleteItem(itemId) }
+            )
         }
     }
 }

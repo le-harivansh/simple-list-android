@@ -10,13 +10,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.simplelist.model.Item
 
 @Composable
-fun ListItem(item: Item) {
+fun ListItem(item: Item, deleteItem: (Int) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -34,11 +33,7 @@ fun ListItem(item: Item) {
         }
 
         Row(modifier = Modifier.padding(4.dp)) {
-            Button(onClick = { /*TODO*/ }) {
-                Text(text = "I")
-            }
-
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = { deleteItem(item.id) }) {
                 Text(text = "X")
             }
         }
