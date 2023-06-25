@@ -15,20 +15,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.simplelist.R
+import com.example.simplelist.ui.screens.CreateNewItemScreen
 import com.example.simplelist.ui.screens.HomeScreen
 import com.example.simplelist.ui.screens.HomeScreenViewModel
+import com.example.simplelist.ui.screens.Route
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SimpleListApp() {
+    val navController = rememberNavController()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { TopAppBar(scrollBehavior = scrollBehavior) },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(onClick = { navController.navigate(Route.CreateItem.routeName) }) {
                 Text(text = "+")
             }
         }
@@ -38,10 +44,22 @@ fun SimpleListApp() {
             .padding(it)) {
             val viewModel: HomeScreenViewModel = viewModel(factory = HomeScreenViewModel.Factory)
 
-            HomeScreen(
-                uiState = viewModel.uiState,
-                deleteItem = { itemId -> viewModel.deleteItem(itemId) }
-            )
+            NavHost(navController = navController, startDestination = Route.Home.routeName) {
+                composable(route = Route.Home.routeName) {
+                    HomeScreen(
+                        uiState = viewModel.uiState,
+                        deleteItem = { itemId -> viewModel.deleteItem(itemId) }
+                    )
+                }
+
+                composable(route = Route.CreateItem.routeName) {
+                    CreateNewItemScreen { newItemTitle ->
+                        viewModel.createNewItem(newItemTitle)
+
+                        navController.navigate(Route.Home.routeName)
+                    }
+                }
+            }
         }
     }
 }

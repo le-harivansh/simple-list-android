@@ -12,6 +12,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.simplelist.SimpleListApplication
 import com.example.simplelist.data.ItemsRepository
 import com.example.simplelist.model.Item
+import com.example.simplelist.network.dto.CreateNewItemDto
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -45,6 +46,14 @@ class HomeScreenViewModel(
             } catch (e: HttpException) {
                 HomeScreenUiState.Error(e.message ?: "A HttpException occurred")
             }
+        }
+    }
+
+    fun createNewItem(newItemTitle: String) {
+        viewModelScope.launch {
+            itemsRepository.createNewItem(CreateNewItemDto(newItemTitle))
+
+            getItems()
         }
     }
 
