@@ -1,16 +1,19 @@
 package com.example.simplelist.ui.screens
 
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.simplelist.model.Item
+import com.example.simplelist.ui.composables.ListItem
 
 @Composable
 fun HomeScreen(uiState: HomeScreenUiState, modifier: Modifier = Modifier) {
     when (uiState) {
         is HomeScreenUiState.Loading -> LoadingScreen(modifier = modifier)
         is HomeScreenUiState.Error -> ErrorScreen(uiState.errorMessage, modifier = modifier)
-        is HomeScreenUiState.Success -> ItemsScreen(items = uiState.items, modifier = modifier)
+        is HomeScreenUiState.Success -> ItemsScreen(listItems = uiState.items)
     }
 }
 
@@ -25,6 +28,8 @@ fun ErrorScreen(message: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ItemsScreen(items: List<Item>, modifier: Modifier = Modifier) {
-    Text(text = "GOT ${items.size} ITEMS")
+fun ItemsScreen(listItems: List<Item>) {
+    LazyColumn {
+        items(listItems) { ListItem(item = it) }
+    }
 }
