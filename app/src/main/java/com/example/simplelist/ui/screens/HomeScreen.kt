@@ -12,12 +12,13 @@ import com.example.simplelist.ui.composables.ListItem
 fun HomeScreen(
     uiState: HomeScreenUiState,
     deleteItem: (Int) -> Unit,
+    navigateToItem: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     when (uiState) {
         is HomeScreenUiState.Loading -> LoadingScreen(modifier = modifier)
         is HomeScreenUiState.Error -> ErrorScreen(uiState.errorMessage, modifier = modifier)
-        is HomeScreenUiState.Success -> ItemsScreen(listItems = uiState.items, deleteItem)
+        is HomeScreenUiState.Success -> ItemsScreen(listItems = uiState.items, deleteItem, navigateToItem)
     }
 }
 
@@ -32,8 +33,8 @@ fun ErrorScreen(message: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ItemsScreen(listItems: List<Item>, deleteItem: (Int) -> Unit) {
+fun ItemsScreen(listItems: List<Item>, deleteItem: (Int) -> Unit, navigateToItem: (Int) -> Unit) {
     LazyColumn {
-        items(listItems) { ListItem(item = it, deleteItem) }
+        items(listItems) { ListItem(item = it, deleteItem, navigateToItem) }
     }
 }

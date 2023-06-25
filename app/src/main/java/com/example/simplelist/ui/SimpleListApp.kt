@@ -15,14 +15,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.simplelist.R
 import com.example.simplelist.ui.screens.CreateNewItemScreen
 import com.example.simplelist.ui.screens.HomeScreen
 import com.example.simplelist.ui.screens.HomeScreenViewModel
 import com.example.simplelist.ui.screens.Route
+import com.example.simplelist.ui.screens.UpdateItemScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,7 +51,8 @@ fun SimpleListApp() {
                 composable(route = Route.Home.routeName) {
                     HomeScreen(
                         uiState = viewModel.uiState,
-                        deleteItem = { itemId -> viewModel.deleteItem(itemId) }
+                        deleteItem = { itemId -> viewModel.deleteItem(itemId) },
+                        navigateToItem = { itemId -> navController.navigate("update-item/$itemId") }
                     )
                 }
 
@@ -58,6 +62,23 @@ fun SimpleListApp() {
 
                         navController.navigate(Route.Home.routeName)
                     }
+                }
+                
+                composable(
+                    route = Route.UpdateItem.routeName,
+                    arguments = listOf(
+                        navArgument("itemId") { type = NavType.IntType }
+                    )
+                ) { backStackEntry ->
+                    UpdateItemScreen(
+                        itemId = backStackEntry.arguments!!.getInt("itemId"),
+                        uiState = viewModel.uiState,
+                        onUpdate = { id, updatedTitle ->
+                            viewModel.updateItem(id, updatedTitle)
+
+                            navController.navigate(Route.Home.routeName)
+                        }
+                    )
                 }
             }
         }

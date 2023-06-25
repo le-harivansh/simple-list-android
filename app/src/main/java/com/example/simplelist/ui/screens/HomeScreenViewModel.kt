@@ -51,7 +51,15 @@ class HomeScreenViewModel(
 
     fun createNewItem(newItemTitle: String) {
         viewModelScope.launch {
-            itemsRepository.createNewItem(CreateNewItemDto(newItemTitle))
+            itemsRepository.createNewItem(newItemTitle)
+
+            getItems()
+        }
+    }
+
+    fun updateItem(id: Int, title: String) {
+        viewModelScope.launch {
+            itemsRepository.updateItem(id, title)
 
             getItems()
         }

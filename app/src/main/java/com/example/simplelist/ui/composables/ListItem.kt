@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.example.simplelist.model.Item
 
 @Composable
-fun ListItem(item: Item, deleteItem: (Int) -> Unit) {
+fun ListItem(item: Item, deleteItem: (Int) -> Unit, navigateToItem: (Int) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -33,6 +33,10 @@ fun ListItem(item: Item, deleteItem: (Int) -> Unit) {
         }
 
         Row(modifier = Modifier.padding(4.dp)) {
+            Button(onClick = { navigateToItem(item.id) }) {
+                Text(text = "i")
+            }
+
             Button(onClick = { deleteItem(item.id) }) {
                 Text(text = "X")
             }
