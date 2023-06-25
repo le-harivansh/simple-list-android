@@ -9,19 +9,19 @@ import com.example.simplelist.model.Item
 fun HomeScreen(uiState: HomeScreenUiState, modifier: Modifier = Modifier) {
     when (uiState) {
         is HomeScreenUiState.Loading -> LoadingScreen(modifier = modifier)
-        is HomeScreenUiState.Error -> ErrorScreen(modifier = modifier)
+        is HomeScreenUiState.Error -> ErrorScreen(uiState.errorMessage, modifier = modifier)
         is HomeScreenUiState.Success -> ItemsScreen(items = uiState.items, modifier = modifier)
     }
 }
 
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
-    Text(text = "LOADING...")
+    Text(text = "LOADING...", modifier = modifier)
 }
 
 @Composable
-fun ErrorScreen(modifier: Modifier = Modifier) {
-    Text(text = "ERROR")
+fun ErrorScreen(message: String, modifier: Modifier = Modifier) {
+    Text(text = "ERROR: $message", modifier = modifier)
 }
 
 @Composable

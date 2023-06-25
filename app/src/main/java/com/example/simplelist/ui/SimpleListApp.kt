@@ -30,7 +30,7 @@ fun SimpleListApp() {
         Surface(modifier = Modifier
             .fillMaxSize()
             .padding(it)) {
-            val viewModel: HomeScreenViewModel = viewModel()
+            val viewModel: HomeScreenViewModel = viewModel(factory = HomeScreenViewModel.Factory)
 
             HomeScreen(uiState = viewModel.uiState)
         }
